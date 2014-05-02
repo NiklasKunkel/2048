@@ -119,7 +119,7 @@ void interrupt button_handler()
         }
 
 
-//Depending on Button's pushed, make some noises
+//Depending on Button's pushed flip a bit in the array ulrd (up,left,right,down)
 /*Button controls--------------------------------------------------------------------*/
         //
         if (up == 1 && left == 0 && right == 0 && down == 0 && reset == 0){

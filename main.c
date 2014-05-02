@@ -27,8 +27,13 @@
 #define BROWN 0x14		//GOOD
 #define WHITE 0xFF		//GOOD
 
+//Indices of colours array refer to each box. Color in that index will determine that box's color
 unsigned char colours[16] = {GRAY, RED, ORANGE, YELLOW, GREEN, BLUE, PURPLE, PINK, LIME, CYAN, BROWN, CYAN, LIME, PINK, PURPLE, BLUE};
+
+//Used to see which button was pressed (Up Left Down Right Reset)
 int dpad[5] = {0,0,0,0,0};
+
+//Below vars would be used to store 4 bytes for every box to store numerical hex by representations
 //unsigned char digits[64];	//unused due to MSP430 memory limitations
 //int erase_count = 0;		//unused due to MSP430 memory limitations
 
@@ -52,7 +57,7 @@ int main(void)
 
 
     //2048 Game Variables
-    uint16_t board[SIZE][SIZE];
+    uint16_t board[SIZE][SIZE];     //board will be the internal representation of 2048 grid
     bool success;
     int colour_index;
 
@@ -64,8 +69,9 @@ int main(void)
     //Erase Screen then draw our Game Board
     Erase_Screen();
     init_Grid();
-    boardToColour(board,colours);
-    draw_Grid(colours);
+    boardToColour(board,colours);   //convert internal board representation into corresponding colors for each box
+    draw_Grid(colours);             //use the colours array to draw the boxes in their new positions with their
+                                    //corresponding new color(s)
 
     //Game will forever be in loop
     while(true)
@@ -96,7 +102,7 @@ int main(void)
     	//Input = DOWN
     	else if(dpad[3])
     	{
-    		success = moveRight(board);
+    		success = moveRight(board); //makes it go down
     		dpad[3] = 0;
     	}
 
@@ -107,6 +113,7 @@ int main(void)
     	    init_Grid();
 
     	    memset(board,0,sizeof(board));
+            //AddRandom is called twice b/c the game starts with 2 tiles
     	    addRandom(board);
     	    addRandom(board);
 

@@ -1,10 +1,12 @@
 #include "msp430g2553.h"
 #include "uart.h"
 
-#define LED BIT0
-#define RXD BIT1
-#define TXD BIT2
+//Pin Assignements
+#define LED BIT0	//LED to signal data transmission via UART
+#define RXD BIT1	//RX for UART
+#define TXD BIT2	//TX for UART
 
+//
 #define SMCLKRATE 8000000
 #define BAUDRATE 9600
 #define BRDIV16 ((16*SMCLKRATE)/BAUDRATE)
@@ -20,11 +22,8 @@ volatile unsigned char tx_char = 'd';	//This char is the most current char to go
 volatile unsigned int rx_flag;			//Mailbox Flag for the rx_char.
 volatile unsigned char rx_char = 'd';	//This char is the most current char to come out of the UART
 
-/*uart_init
-* Sets up the UART interface via USCI
-* INPUT: None
-* RETURN: None
-*/
+//uart_init
+//Sets up the UART interface via USCI
 void uart_init(void)
 {
 	P1SEL = RXD + TXD;					//Setup the I/O
@@ -47,11 +46,8 @@ void uart_init(void)
 	return;
 }
 
-/*uart_getc
-* Get a char from the UART. Waits till it gets one
-* INPUT: None
-* RETURN: Char from UART
-*/
+//uart_getc
+//Get a char from the UART. Waits till it gets one
 unsigned char uart_getc()				//Waits for a valid char from the UART
 {
 	while (rx_flag == 0);		 		//Wait for rx_flag to be set
@@ -59,12 +55,9 @@ unsigned char uart_getc()				//Waits for a valid char from the UART
     return rx_char;
 }
 
-/*uart_gets
-* Get a string of known length from the UART. Strings terminate when enter is pressed or string buffer fills
-* Will return when all the chars are received or a carriage return (\r) is received. Waits for the data.
-* INPUT: Array pointer and length
-* RETURN: None
-*/
+//uart_gets
+//Get a string of known length from the UART. Strings terminate when enter is pressed or string buffer fills
+//Will return when all the chars are received or a carriage return (\r) is received. Waits for the data.
 void uart_gets(char* Array, int length)
 {
 	unsigned int i = 0;
@@ -86,11 +79,8 @@ void uart_gets(char* Array, int length)
     return;
 }
 
-/*uart_putc
-* Sends a char to the UART. Will wait if the UART is busy
-* INPUT: Char to send
-* RETURN: None
-*/
+//uart_putc
+//Sends a char to the UART. Will wait if the UART is busy
 void uart_putc(unsigned char c)
 {
 	tx_char = c;						//Put the char into the tx_char
@@ -100,16 +90,14 @@ void uart_putc(unsigned char c)
 	return;
 }
 
-/*uart_puts
-* Sends a string to the UART. Will wait if the UART is busy
-* INPUT: Pointer to String to send
-* RETURN: None
-*/
+//uart_puts
+//Sends a string to the UART. Will wait if the UART is busy
 void uart_puts(char *str)				//Sends a String to the UART.
 {
      while(*str) uart_putc(*str++);		//Advance though string till end
      return;
 }
+
 
 #pragma vector = USCIAB0TX_VECTOR		//UART TX USCI Interrupt
 __interrupt void USCI0TX_ISR(void)

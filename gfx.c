@@ -9,6 +9,7 @@ void Erase_Screen()
 	uart_getc();
 }
 
+//Initalizes the Game Board
 void init_Grid()
 {
     //Set Background White
@@ -80,7 +81,10 @@ void init_Grid()
     uart_getc();
 }
 
-
+//Draws the the 4 by 4 matrix of boxes
+//This is used each turn to redraw the current grid after a shift
+//This "draw-over" overlap approach was used rather than clearing the
+//screen each time because Erase Screen would cause annoying flickering
 void draw_Grid(volatile unsigned char colours[16])
 {
 		//BOX1 TL(39,39) - BR(94,73)
@@ -292,6 +296,7 @@ void draw_Grid(volatile unsigned char colours[16])
 	    uart_getc();
 }
 
+//Prints Game Over in the Center of the Screen
 void gameOver()
 {
     //PRINT GAME OVER
@@ -317,6 +322,7 @@ void gameOver()
 	uart_getc();
 }
 
+//Prints You Win in the center of the screen
 void youWin()
 {
     //PRINT YOU WIN

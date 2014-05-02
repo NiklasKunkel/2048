@@ -7,26 +7,28 @@
 
 #define SIZE 4
 #define _XOPEN_SOURCE 500
-#define GRAY 0xAD		//GOOD
-#define RED 0x07		//GOOD
+#define GRAY 0xAD
+#define RED 0x07
 #define ORANGE 0x1F
-#define YELLOW 0x3F		//GOOD
-#define GREEN 0x20		//GOOD
-#define BLUE 0x88		//GOOD
+#define YELLOW 0x3F
+#define GREEN 0x20
+#define BLUE 0x88
 #define PURPLE 0x84
 #define PINK 0xCF
 #define LIME 0x00
-#define CYAN 0xF0		//GOOD
+#define CYAN 0xF0
 #define BROWN 0x14
-#define WHITE 0xFF		//GOOD
+#define WHITE 0xFF
 
 unsigned int score=0;
 
+//Get The Score of the Game
 unsigned int getScore()
 {
 	return score;
 }
 
+//Find Target for Box Homologation
 int8_t findTarget(uint16_t array[SIZE],int8_t x,int8_t stop)
 {
 	int8_t t;
@@ -52,6 +54,7 @@ int8_t findTarget(uint16_t array[SIZE],int8_t x,int8_t stop)
 	return x;
 }
 
+//Slide The Whole Array (Horizontal/Vertical) in the input direction
 bool slideArray(uint16_t array[SIZE])
 {
 	bool success = false;
@@ -76,6 +79,8 @@ bool slideArray(uint16_t array[SIZE])
 	return success;
 }
 
+//Rotates the matrix board
+//This makes it easier to modularize the special cases for movement mapping
 void rotateBoard(uint16_t board[SIZE][SIZE])
 {
 	int8_t i,j,n=SIZE;
@@ -91,6 +96,7 @@ void rotateBoard(uint16_t board[SIZE][SIZE])
 	}
 }
 
+//Shift Board Up
 bool moveUp(uint16_t board[SIZE][SIZE])
 {
 	bool success = false;
@@ -101,6 +107,7 @@ bool moveUp(uint16_t board[SIZE][SIZE])
 	return success;
 }
 
+//Shift Board Left
 bool moveLeft(uint16_t board[SIZE][SIZE])
 {
 	bool success;
@@ -112,6 +119,7 @@ bool moveLeft(uint16_t board[SIZE][SIZE])
 	return success;
 }
 
+//Shift Board Down
 bool moveDown(uint16_t board[SIZE][SIZE])
 {
 	bool success;
@@ -123,6 +131,7 @@ bool moveDown(uint16_t board[SIZE][SIZE])
 	return success;
 }
 
+//Shift Board Right
 bool moveRight(uint16_t board[SIZE][SIZE])
 {
 	bool success;
@@ -134,6 +143,7 @@ bool moveRight(uint16_t board[SIZE][SIZE])
 	return success;
 }
 
+//Combine Pair Downwards
 bool findPairDown(uint16_t board[SIZE][SIZE])
 {
 	bool success = false;
@@ -146,6 +156,7 @@ bool findPairDown(uint16_t board[SIZE][SIZE])
 	return success;
 }
 
+//Counts the amount of empty squares
 int16_t countEmpty(uint16_t board[SIZE][SIZE])
 {
 	int8_t x,y;
@@ -160,6 +171,8 @@ int16_t countEmpty(uint16_t board[SIZE][SIZE])
 	return count;
 }
 
+//Game Over test case
+//Game is over when no moves are possible
 bool gameEnded(uint16_t board[SIZE][SIZE])
 {
 	bool ended = true;
@@ -173,6 +186,8 @@ bool gameEnded(uint16_t board[SIZE][SIZE])
 	return ended;
 }
 
+//Function for adding square in random position
+//Could be a random 2 or random 4
 void addRandom(uint16_t board[SIZE][SIZE])
 {
 	static bool initialized = false;
@@ -204,7 +219,7 @@ void addRandom(uint16_t board[SIZE][SIZE])
 	}
 }
 
-//Translates Numbers of each Box to Correspond to Colors
+//Translates Numbers of each Box to Correspond to Colors on the Display
 void boardToColour(uint16_t board[SIZE][SIZE], unsigned char colours[SIZE*SIZE])
 {
 	//Index in colour array
